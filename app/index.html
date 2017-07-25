@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/vue.js"></script>
+	<style>
+		.global {
+			width: 300px;
+			height: 300px;
+			border:10px solid #eee;
+			position: relative;
+		}
+		.global-inner {
+			position: relative;
+			
+			width: 20px;
+			height: 20px;
+			border:5px dashed red;
+		}
+		#app ul li {
+			width: 400px;
+			display: block;
+			overflow: hidden;
+			margin-bottom: 10px;
+		}
+		#app ul li span{
+			font-weight: bold;
+			color:violet;
+		}
+		#app ul li button{
+			float: right;
+			margin-right: 20px;
+		}
+		svg {
+			border:5px solid #000;
+			margin:200px auto 0;
+			display: block;
+		}
+		#svg_1,
+		#svg_2,
+		#svg_3,
+		#svg_4,
+		#h12 {
+			transition: all .7s;
+		}
+		g {
+			cursor: pointer;
+		}
+		g.active circle{
+			fill:red;
+		}
+		g.active text{
+			
+             fill: #fff;
+		}
+		.addWeman input {
+			outline: none;
+		}
+		.addWeman input.bad {
+			border:1px solid red;
+		}
+	</style>
+</head>
+<body>
+
+	<!-- <h1>Продвижение и раскрутка <span id="animText"></span></h1>
+
+	<script type="text/javascript">
+	
+		var elem = $('#animText');
+
+		var text = ["Интернет магазинов","Лендингов","Блогов","Форумов"];
+
+		var count = 0;
+
+		var countinner = 0;
+
+		function zam (box) {
+			
+			if (typeof box == "") {
+				box = box.split("");
+			} 
+			if (count == box.length) {
+				setTimeout(function () {
+					two();
+				},500);
+				
+			} else {
+				var globalText = $(elem).text();
+
+				$(elem).text( globalText + box[count] );
+				count++;
+
+				setTimeout(function () {
+					zam(box);
+				},100);
+			}
+		}
+
+		
+		function two () {
+
+			var box = text[countinner];
+
+			if (!box) {
+				countinner=0;
+				box = text[countinner];
+			} 
+
+			if (box) {
+				$(elem).text("");
+				count = 0;
+				zam(box);
+				countinner++;
+			}
+		}
+
+		two();
+
+	</script> -->
+
+
+
+
+	<style>
+		
+		#area {
+			width: 300px;
+			height: 300px;
+		}
+		#area span {
+			display: block;
+			float: left;
+			width: 100px;
+			height: 100px;
+			border:3px solid #eee;
+			box-sizing: border-box;
+			background: #fff;
+			cursor: pointer;
+		}
+		#area span.sub1 {
+			background: #000;
+		}
+		#area span.sub2 {
+			background: red;
+		}
+	</style>
+
+
+
+
+	<div id="area">
+		
+		<strong v-if="count == 0 ">Ходит игрок 1</strong>
+		<strong v-if="count == 1 ">Ходит игрок 2</strong>
+		<h2 v-if="sub1Win">Первый игрок победил</h2>
+		<h2 v-if="sub2Win">Второй игрок победил</h2>
+		<br>
+		<br>
+			<button v-on:click="reset()">RESET</button>
+		<br>
+		<br>
+
+
+
+			
+		<br>
+		<br>
+
+
+		<span v-for="(box,index) in boxes" v-on:click="click(box,index)" v-bind:class="{ sub1: box.sub1, sub2: box.sub2}"></span>
+	
+	</div>
+
+
+
+
+
+
+	<script>
+		
+		var app1 = new Vue({
+			el:"#area",
+			data: {
+				boxes: [{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				},{
+					sub1:false,
+					sub2:false
+				}],
+				count:0,
+				sub1Win:false,
+				sub2Win:false,
+				clickOff:false
+			},
+			methods: {
+				click:function (box,index) {
+
+
+
+					if (!this.clickOff) {
+
+
+						if (box.sub1 == true || box.sub2 == true) {
+
+						} else {
+
+							if (this.count == 0) {
+								box.sub1 = true;
+								this.count++;
+								
+							} else if ( this.count == 1 ) {
+								box.sub2 = true;
+								this.count--;
+							}
+
+							
+
+							var counter = 0;
+
+							for (var i = 0; i < this.boxes.length;i+=3) {
+
+								if (this.boxes[i].sub1 && this.boxes[i+1].sub1 && this.boxes[i+2].sub1) {
+
+									console.log('sub1');
+									this.sub1Win = true;
+									this.clickOff = true;
+
+								} 
+
+								if (this.boxes[i].sub2 && this.boxes[i+1].sub2 && this.boxes[i+2].sub2) {
+									console.log('sub2');
+									this.sub2Win = true;
+									this.clickOff = true;
+								}
+
+							}
+
+
+
+
+							for (var i = 0; i < 3;i++) {
+
+
+								
+
+
+								if (this.boxes[i].sub1 && this.boxes[i+3].sub1 && this.boxes[i+6].sub1) {
+									console.log('sub1');
+									this.sub1Win = true;
+									this.clickOff = true;
+								}
+
+								if (this.boxes[i].sub2 && this.boxes[i+3].sub2 && this.boxes[i+6].sub2) {
+									console.log('sub2');
+									this.sub2Win = true;
+									this.clickOff = true;
+								}
+
+							}
+
+							for (var i =0; i < 3;i++) {
+
+
+								if (this.boxes[i].sub1 && this.boxes[i+4].sub1 && this.boxes[i+8].sub1) {
+									console.log('sub1');
+									this.sub1Win = true;
+									this.clickOff = true;
+								}
+
+								if (this.boxes[i+2].sub1 && this.boxes[i+4].sub1 && this.boxes[i+6].sub1) {
+									console.log('sub1');
+									this.sub1Win = true;
+									this.clickOff = true;
+								}
+
+
+								if (this.boxes[i].sub2 && this.boxes[i+4].sub2 && this.boxes[i+8].sub2) {
+									console.log('sub2');
+									this.sub2Win = true;
+									this.clickOff = true;
+
+								}
+
+								if (this.boxes[i+2].sub2 && this.boxes[i+4].sub2 && this.boxes[i+6].sub2) {
+									console.log('sub2');
+									this.sub2Win = true;
+									this.clickOff = true;
+								}
+
+								
+
+							}
+
+
+						}
+
+
+					}
+					
+
+						
+				},
+				reset:function () {
+					this.count = 0;
+					this.sub1Win = false;
+					this.sub2Win = false;
+					this.clickOff = false;
+					for (var i =0;i < this.boxes.length;i++) {
+						this.boxes[i].sub1 = false;
+						this.boxes[i].sub2 = false;
+					}
+				}
+			},
+
+		});		
+
+
+
+
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- <div id="app">
+
+		<div class="addWeman">
+			<input type="text" v-model="newGirl" v-bind:class="{ bad: !flag }" v-on:keyup="validName()" v-on:keyup.enter="addGirl">
+			<button v-on:click="addGirl" >Добавить</button>
+		</div>
+		<p>{{ women.length }}</p>
+		<ul>
+			<li v-for="(woman,index) in women ">{{ index+1 }}. {{ woman.name }} 
+				<span v-if="woman.mark" ref="bla2">приглашена</span> 
+				<button v-on:click="delgirl(woman,index)" v-bind:class="{active: Menta}">Удалить</button>
+				<button v-on:click="inviteGirl(woman)">Пригласить</button>
+			</li>
+		</ul>
+
+		<input type="text" ref="bla">
+		<p>{{ bla }}</p>
+		<button v-on:click="refB()">refs Проба</button>
+
+		<button v-on:click="delAllSelect()">Удалить всех</button>
+		<button v-on:click="delAllSelect()">Удалить всех приглашенных</button>
+	</div>
+
+	<script>
+		
+		var app1 = new Vue({
+			el:"#app",
+			data: {
+				women: [
+					{name:"Caitlyn",mark:false},
+					{name:"Ann",mark:true},
+					{name:"Janna",mark:false},
+					{name:"Akali",mark:false},
+					{name:"Jinx",mark:true}
+				],
+				newGirl:"",
+				Menta:true,
+				flag: true,
+				bla:""
+			},
+			methods: {
+				refB: function () {
+					
+					this.bla = this.$refs.bla.value;
+				},
+				inviteGirl: function (woman) {
+
+					woman.mark == 0 ? woman.mark = true : woman.mark = false
+
+				},
+				delgirl: function (woman,index) {
+
+					this.women.splice(woman,1);
+					
+				},
+				addGirl: function () {
+					if (this.flag) {
+						var obj = {name:this.newGirl,mark:false};
+						this.women.push(obj);
+					}
+					
+					
+				},
+				delAllSelect: function () {
+
+					this.women = [];					
+					
+				},
+				validName: function (){
+
+					if ( this.newGirl.length < 3 ) {
+						this.flag = false;
+					} else {
+						this.flag = true;
+					}
+				},
+			}
+		});
+	</script> -->
+</body>
+</html>
